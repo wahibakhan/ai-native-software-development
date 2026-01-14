@@ -19,7 +19,7 @@ This guide shows you how to create high-quality educational content using **AI-n
 - **Vertical intelligence** - Constitution → output-styles → subagents → content (all synchronized)
 
 **Reference Material**:
-- **Chapter 31**: Complete SpecKit Plus hands-on workflow (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/)
+- **Chapter 31**: Complete SpecKit Plus hands-on workflow (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/)
 - **Constitution v3.0.1**: Project principles and evals-first philosophy (.specify/memory/constitution.md)
 - **Chapter Index**: Current book structure (specs/book/chapter-index.md)
 
@@ -56,7 +56,7 @@ This guide shows you how to create high-quality educational content using **AI-n
 
 **3. Quality Standards** (What's acceptable?)
 - Technical accuracy: 100% (all code tested)
-- Constitution alignment: 100% (passes technical-reviewer)
+- Constitution alignment: 100% (passes validation-auditor)
 - Pedagogical effectiveness: 90%+ (learning objectives met)
 
 **Why This Matters**:
@@ -121,7 +121,7 @@ AI will ask questions to fill gaps you might have missed.
 **Ready to Move Forward?**
 When spec has all 6 sections complete (Overview, Scope, Requirements, Acceptance Criteria, Constraints, Success Criteria), proceed to planning.
 
-**Reference**: See Chapter 31, Lesson 3 (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/03-building-specs-with-sp-specify.md) for complete examples.
+**Reference**: See Chapter 31, Lesson 3 (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/03-building-specs-with-sp-specify.md) for complete examples.
 
 ---
 
@@ -173,7 +173,7 @@ Technical details:
 - "Can lessons be parallelized or must they be sequential?"
 - "How does [requirement from spec] appear in the plan?"
 
-**Reference**: See Chapter 31, Lesson 4 (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/04-planning-sp-plan.md).
+**Reference**: See Chapter 31, Lesson 4 (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/04-planning-sp-plan.md).
 
 ---
 
@@ -223,11 +223,11 @@ Example structure:
 ```
 Update @specs/part-X-chapter-Y/tasks.md so that:
 - Add explicit human review checkpoint after each lesson
-- Include validation steps (run technical-reviewer) before completion
+- Include validation steps (run validation-auditor) before completion
 - Group related tasks for better flow
 ```
 
-**Reference**: See Chapter 31, Lesson 5 (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/05-decomposing-tasks-sp-tasks.md).
+**Reference**: See Chapter 31, Lesson 5 (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/05-decomposing-tasks-sp-tasks.md).
 
 ---
 
@@ -253,7 +253,7 @@ Rules:
 
 After each lesson:
 - Mark tasks complete in tasks.md
-- Run technical-reviewer validation
+- Run validation-auditor validation
 - Get human approval before next lesson
 ```
 
@@ -271,7 +271,7 @@ After each lesson:
 2. **Checkpoint: End of Lesson 1**:
    - AI marks T001-T005 complete in tasks.md
    - You review complete lesson content
-   - Run validation: `technical-reviewer` subagent
+   - Run validation: `validation-auditor` subagent
    - If passes: Proceed to Lesson 2
    - If fails: Iterate based on feedback
 
@@ -285,14 +285,14 @@ After each lesson:
 
 **Validation at Each Step**:
 ```
-Run technical-reviewer on Lesson 1 to validate:
+Run validation-auditor on Lesson 1 to validate:
 - Technical accuracy
 - Code quality
 - Constitution alignment
 - Pedagogical effectiveness
 ```
 
-**Reference**: See Chapter 31, Lesson 6 (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/06-implementation-sp-implement.md).
+**Reference**: See Chapter 31, Lesson 6 (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/06-implementation-sp-implement.md).
 
 ---
 
@@ -329,7 +329,7 @@ git checkout -b chapter-X-topic
 
 # Step 2: Create directories manually
 mkdir -p specs/part-X-chapter-Y
-mkdir -p book-source/docs/part-X-chapter-Y
+mkdir -p apps/learn-app/docs/part-X-chapter-Y
 
 # Step 3: Create files manually
 touch specs/part-X-chapter-Y/spec.md
@@ -373,7 +373,7 @@ touch specs/part-X-chapter-Y/tasks.md
 # AI executes tasks, you review at checkpoints
 
 # Step 6: Validate
-# Run technical-reviewer, fix issues
+# Run validation-auditor, fix issues
 
 # Step 7: /sp.git.commit_pr
 # AI handles git workflow, creates PR
@@ -406,13 +406,13 @@ A synchronized 4-layer architecture where every layer references the same author
               ↓ References
 ┌─────────────────────────────────────┐
 │ Layer 3: Subagents                  │ ← Specialized assistants
-│ (.claude/agents/)                   │   (chapter-planner, lesson-writer,
-│                                     │    technical-reviewer)
+│ (.claude/agents/)                   │   (chapter-planner, content-implementer,
+│                                     │    validation-auditor)
 └─────────────────────────────────────┘
               ↓ Generates
 ┌─────────────────────────────────────┐
 │ Layer 4: Content                    │ ← Book chapters, lessons
-│ (book-source/docs/)                 │   (MDX files with YAML metadata)
+│ (apps/learn-app/docs/)                 │   (MDX files with YAML metadata)
 └─────────────────────────────────────┘
 ```
 
@@ -510,23 +510,23 @@ A synchronized 4-layer architecture where every layer references the same author
 1. Run `/sp.implement`
 2. AI works through tasks sequentially
 3. You review after each lesson (checkpoint)
-4. Run `technical-reviewer` validation
+4. Run `validation-auditor` validation
 5. Iterate if issues found
 6. Move to next lesson when validation passes
 7. Final integration when all lessons complete
 
 **Outputs**:
-- Lesson files: `book-source/docs/part-X-chapter-Y/lesson-N.md`
+- Lesson files: `apps/learn-app/docs/part-X-chapter-Y/lesson-N.md`
 - YAML metadata: 7 generation fields + skills proficiency
 - Code examples: Specification → AI prompt → generated code → validation steps
 - Exercises: "Try With AI" interactive exercises
 - Assessments: End-of-lesson quizzes/tests
 
-**Quality Gate**: Chapter is ready when all lessons pass technical-reviewer validation and human final review.
+**Quality Gate**: Chapter is ready when all lessons pass validation-auditor validation and human final review.
 
 **Subagents Used**:
-- `lesson-writer` (.claude/agents/lesson-writer.md) - generates content
-- `technical-reviewer` (.claude/agents/technical-reviewer.md) - validates quality
+- `content-implementer` (.claude/agents/content-implementer.md) - generates content
+- `validation-auditor` (.claude/agents/validation-auditor.md) - validates quality
 
 ---
 
@@ -537,8 +537,8 @@ A synchronized 4-layer architecture where every layer references the same author
 **Subagents** are specialized AI assistants with isolated context and specific responsibilities. Think of them as expert consultants:
 
 - **chapter-planner**: Architect (designs lesson structure)
-- **lesson-writer**: Content creator (writes lessons following plan)
-- **technical-reviewer**: Quality auditor (validates correctness)
+- **content-implementer**: Content creator (writes lessons following plan)
+- **validation-auditor**: Quality auditor (validates correctness)
 
 **Why Subagents vs. Main AI?**
 - **Isolation**: Subagent context doesn't pollute main conversation
@@ -598,9 +598,9 @@ A synchronized 4-layer architecture where every layer references the same author
 
 ---
 
-### lesson-writer Subagent
+### content-implementer Subagent
 
-**Location**: `.claude/agents/lesson-writer.md`
+**Location**: `.claude/agents/content-implementer.md`
 
 **When to Use**: During `/sp.implement` phase
 
@@ -619,7 +619,7 @@ A synchronized 4-layer architecture where every layer references the same author
 ```
 /sp.implement
 ```
-(Main AI automatically invokes lesson-writer subagent for each lesson)
+(Main AI automatically invokes content-implementer subagent for each lesson)
 
 **Skills Used** (from .claude/skills/):
 - learning-objectives
@@ -656,7 +656,7 @@ learning_objectives:
     assessment_method: "How we measure this"
 
 # Generation metadata (7 fields)
-generated_by: "lesson-writer-v3.0.1"
+generated_by: "content-implementer-v3.0.1"
 source_spec: "specs/part-X-chapter-Y/spec.md"
 created: "2025-11-04"
 last_modified: "2025-11-04"
@@ -673,13 +673,13 @@ version: "1.0.0"
 - All domain skills applied contextually
 - Output-styles formatting followed
 
-**Reference**: `.claude/agents/lesson-writer.md` (updated for constitution v3.0.1)
+**Reference**: `.claude/agents/content-implementer.md` (updated for constitution v3.0.1)
 
 ---
 
-### technical-reviewer Subagent
+### validation-auditor Subagent
 
-**Location**: `.claude/agents/technical-reviewer.md`
+**Location**: `.claude/agents/validation-auditor.md`
 
 **When to Use**: After lesson implementation, before moving to next lesson
 
@@ -695,7 +695,7 @@ version: "1.0.0"
 **Invocation**:
 After each lesson:
 ```
-Run technical-reviewer on Chapter X, Lesson Y.
+Run validation-auditor on Chapter X, Lesson Y.
 
 Validate:
 - Technical correctness
@@ -735,7 +735,7 @@ Validate:
 - REVISE: 1-3 critical OR 3+ major issues
 - FAIL: 4+ critical issues
 
-**Reference**: `.claude/agents/technical-reviewer.md` (updated for constitution v3.0.1)
+**Reference**: `.claude/agents/validation-auditor.md` (updated for constitution v3.0.1)
 
 ---
 
@@ -763,7 +763,7 @@ Validate:
 
 **How**:
 ```
-Run technical-reviewer on Chapter X, Lesson Y
+Run validation-auditor on Chapter X, Lesson Y
 ```
 
 **What's Checked**:
@@ -785,7 +785,7 @@ Run technical-reviewer on Chapter X, Lesson Y
 
 **How**:
 ```
-Run technical-reviewer chapter-level validation for Chapter X.
+Run validation-auditor chapter-level validation for Chapter X.
 
 Check:
 - Lesson flow and coherence
@@ -810,7 +810,7 @@ Check:
 
 #### Tier 3: Human Final Review (Before Publication)
 
-**When**: Chapter passes technical-reviewer validation
+**When**: Chapter passes validation-auditor validation
 
 **What You Do**:
 1. **Editorial polish**: Voice, tone, flow
@@ -843,9 +843,9 @@ Use this checklist for every chapter:
 # Chapter X Validation Checklist
 
 ## Tier 1: Lesson-Level Validation
-- [ ] Lesson 1: technical-reviewer PASS
-- [ ] Lesson 2: technical-reviewer PASS
-- [ ] Lesson 3: technical-reviewer PASS
+- [ ] Lesson 1: validation-auditor PASS
+- [ ] Lesson 2: validation-auditor PASS
+- [ ] Lesson 3: validation-auditor PASS
 - [Continue for all lessons...]
 
 ## Tier 2: Chapter-Level Validation
@@ -892,7 +892,7 @@ Use this checklist for every chapter:
 **Send**:
 - This guide (docs/COWRITER-GUIDE.md)
 - Constitution v3.0.1 (.specify/memory/constitution.md)
-- Chapter 31 (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/)
+- Chapter 31 (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/)
 
 **Ask them to read**:
 1. Constitution Core Principles (especially #1: Evals-First)
@@ -941,7 +941,7 @@ This is just practice - we'll delete this chapter after walkthrough.
 
 **Walkthrough**:
 1. Complete all 4 phases (/sp.specify → /sp.plan → /sp.tasks → /sp.implement)
-2. Run technical-reviewer validation
+2. Run validation-auditor validation
 3. See how iteration and refinement works
 4. Delete practice chapter
 
@@ -992,7 +992,7 @@ Reference Material:
 
 **After Each Lesson**:
 - Review lesson content
-- Run technical-reviewer together
+- Run validation-auditor together
 - Discuss any issues found
 - Approve before next lesson
 
@@ -1155,7 +1155,7 @@ Production Validation Checklist:
 
 ### Pattern 4: Handling Validation Failures
 
-**Scenario**: technical-reviewer finds critical issues after lesson implementation
+**Scenario**: validation-auditor finds critical issues after lesson implementation
 
 **What Happened**:
 ```markdown
@@ -1218,7 +1218,7 @@ Adjust content to match B1 complexity (up to 10 concepts allowed).
 
 **Step 3: Re-validate**
 ```
-Run technical-reviewer on updated Chapter 31, Lesson 2
+Run validation-auditor on updated Chapter 31, Lesson 2
 ```
 
 **Step 4: Verify fix**
@@ -1276,14 +1276,14 @@ Ensure:
 **Fix**:
 ```
 Write the generated content to file:
-- Path: book-source/docs/part-X-chapter-Y/lesson-N.md
+- Path: apps/learn-app/docs/part-X-chapter-Y/lesson-N.md
 - Ensure all YAML metadata included
 - Verify file created successfully
 ```
 
 **Prevention**: After subagent execution, verify files exist:
 ```bash
-ls -la book-source/docs/part-X-chapter-Y/
+ls -la apps/learn-app/docs/part-X-chapter-Y/
 ```
 
 ---
@@ -1396,8 +1396,8 @@ git checkout -b part-X-chapter-Y-topic
 | Subagent | Location | Purpose | Invoked By |
 |----------|----------|---------|-----------|
 | **chapter-planner** | .claude/agents/chapter-planner.md | Plan lesson structure, proficiency levels | `/sp.plan` |
-| **lesson-writer** | .claude/agents/lesson-writer.md | Generate lesson content | `/sp.implement` |
-| **technical-reviewer** | .claude/agents/technical-reviewer.md | Validate quality | Manual after lessons |
+| **content-implementer** | .claude/agents/content-implementer.md | Generate lesson content | `/sp.implement` |
+| **validation-auditor** | .claude/agents/validation-auditor.md | Validate quality | Manual after lessons |
 
 ---
 
@@ -1407,14 +1407,14 @@ Skills are located in `.claude/skills/` and dynamically discovered:
 
 | Skill | Purpose | Used By |
 |-------|---------|---------|
-| **learning-objectives** | Define clear, testable objectives | chapter-planner, lesson-writer |
-| **concept-scaffolding** | Apply graduated complexity | chapter-planner, lesson-writer |
-| **code-example-generator** | Create code examples with specs | lesson-writer |
-| **exercise-designer** | Design "Try With AI" exercises | lesson-writer |
-| **assessment-builder** | Create end-of-lesson quizzes | lesson-writer |
-| **technical-clarity** | Write clear technical explanations | lesson-writer |
-| **book-scaffolding** | Maintain book structure, cross-references | chapter-planner, lesson-writer |
-| **ai-augmented-teaching** | Frame AI as co-reasoning partner | lesson-writer |
+| **learning-objectives** | Define clear, testable objectives | chapter-planner, content-implementer |
+| **concept-scaffolding** | Apply graduated complexity | chapter-planner, content-implementer |
+| **code-example-generator** | Create code examples with specs | content-implementer |
+| **exercise-designer** | Design "Try With AI" exercises | content-implementer |
+| **assessment-builder** | Create end-of-lesson quizzes | content-implementer |
+| **technical-clarity** | Write clear technical explanations | content-implementer |
+| **book-scaffolding** | Maintain book structure, cross-references | chapter-planner, content-implementer |
+| **ai-augmented-teaching** | Frame AI as co-reasoning partner | content-implementer |
 | **skills-proficiency-mapper** | Map CEFR/Bloom's/DigComp levels | chapter-planner |
 
 ---
@@ -1425,9 +1425,9 @@ Skills are located in `.claude/skills/` and dynamically discovered:
 |------|---------|---------|
 | `.specify/memory/constitution.md` | Project principles, evals-first, domain skills | All subagents |
 | `specs/book/chapter-index.md` | Book structure, chapter status | chapter-planner |
-| `.claude/output-styles/chapters.md` | Chapter formatting standards | lesson-writer |
-| `.claude/output-styles/lesson.md` | Lesson formatting standards | lesson-writer |
-| `book-source/` | Source material to reference | lesson-writer |
+| `.claude/output-styles/chapters.md` | Chapter formatting standards | content-implementer |
+| `.claude/output-styles/lesson.md` | Lesson formatting standards | content-implementer |
+| `apps/learn-app/` | Source material to reference | content-implementer |
 
 ---
 
@@ -1444,7 +1444,7 @@ Skills are located in `.claude/skills/` and dynamically discovered:
 **You are now ready** to create high-quality educational content using the SpecKit Plus methodology!
 
 **Questions?** Reference:
-- Chapter 31: Complete hands-on workflow (book-source/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/)
+- Chapter 31: Complete hands-on workflow (apps/learn-app/docs/05-Spec-Kit-Plus-Methodology/31-spec-kit-plus-hands-on/)
 - Constitution v3.0.1: Project principles (.specify/memory/constitution.md)
 - This guide: AI-native patterns and troubleshooting
 

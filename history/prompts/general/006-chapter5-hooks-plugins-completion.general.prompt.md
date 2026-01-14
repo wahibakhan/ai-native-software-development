@@ -9,19 +9,27 @@ feature: 05-claude-code-features-and-workflows
 branch: redesign/part2_chapters
 user: mjs
 command: continuation from previous context
-labels: ["pedagogy","chapter-5","hooks","plugins","lesson-structure","simplification"]
+labels:
+  [
+    "pedagogy",
+    "chapter-5",
+    "hooks",
+    "plugins",
+    "lesson-structure",
+    "simplification",
+  ]
 links:
   spec: null
   ticket: null
   adr: null
   pr: null
 files:
-  - book-source/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/07-hooks-and-automation-triggers.md
-  - book-source/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/08-plugins-composition.md
-  - book-source/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/README.md
-  - book-source/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/04-subagents.md
-  - book-source/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/05-agent-skills.md
-  - book-source/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/06-mcp-servers-and-workflows.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/07-hooks-and-automation-triggers.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/08-plugins-composition.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/README.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/04-subagents.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/05-agent-skills.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/05-claude-code-features-and-workflows/06-mcp-servers-and-workflows.md
 tests:
   - Verified hooks lesson simplified to 3 echo examples only
   - Confirmed plugins lesson reframed as composition architecture
@@ -41,6 +49,7 @@ Task: Verify final state, ensure all Chapter 5 work is complete and properly sta
 ## Response snapshot
 
 ✅ All work completed successfully:
+
 - Hooks lesson (07) simplified from 400+ lines of complex patterns to 500-line focused lesson with single echo example
 - Plugins lesson (08) reframed from "automation/CI-CD" to "composition architecture"
 - Chapter 5 now has 8 properly sequenced lessons (01-08)
@@ -61,4 +70,4 @@ Task: Verify final state, ensure all Chapter 5 work is complete and properly sta
 - Failure modes observed: Initial plugins lesson positioned only as "CI/CD automation" (architectural misunderstanding corrected by user); Initial hooks lesson overly complex for beginners (simplified per user request)
 - Graders run and results: Content grounded in Claude Code official docs via MCP context7 (PASS); Lesson sequence pedagogically sound A1→B1 progression (PASS); Complexity tier appropriate for Chapter 5 intermediate level (PASS)
 - Prompt variant: User's explicit feedback ("simplify to echo examples") more effective than initial comprehensive approach
-- Next experiment: Validate final chapter against technical-reviewer before publication
+- Next experiment: Validate final chapter against validation-auditor before publication

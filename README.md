@@ -1,10 +1,10 @@
-# 🧠 AI Native Software Development
+# 🏭 The AI Agent Factory
 
-> **Colearning Agentic AI with Python and TypeScript – The AI & Spec Driven Way**
+> **The Spec-Driven Blueprint for Building and Monetizing Digital FTEs**
 >
-> **Empowering developers, entrepreneurs, and organizations to learn, build, and collaborate with intelligent AI agents — building systems where AI is the core.**
+> **Empowering developers, entrepreneurs, and organizations to learn, build, and monetize intelligent AI agents — creating reliable Digital FTEs you can trust, deploy, and scale.**
 
-📚 **Live Book**: [https://ai-native.panaversity.org](https://ai-native.panaversity.org) | [Panaversity Books](https://panaversity.com/books/ai-native-software-development)
+📚 **Live Book**: [https://agentfactory.panaversity.org](https://agentfactory.panaversity.org) | [Panaversity Books](https://panaversity.com/books/ai-native-software-development)
 
 ---
 
@@ -23,31 +23,9 @@
 
 ---
 
-## CoLearning Programming & Agentic AI with Python and TypeScript
-
 <p align="center">
-  <img src="cover.png" alt="AI Native CoLearning Programming & Agentic AI - The AI-Driven Way" width="600" />
+  <img src="apps/learn-app/static/img/book-cover-page.png" alt="AI Native CoLearning Programming & Agentic AI - The AI-Driven Way" width="600" />
 </p>
-
-## 🎯 Vision
-
-**AI Native Software Development** is a **56-chapter technical book, open specification, and development framework** that teaches you to build intelligent systems where AI is the core.
-
-Rather than using AI to code faster, we teach you to **architect systems where intelligent agents are fundamental components** — applications that reason, learn, and collaborate. The learning journey progresses through three critical stages:
-
-1. **AI-Assisted Development** — Using AI tools as productivity enhancers
-2. **AI-Driven Development** — Using specifications to generate systems with AI agents
-3. **AI-Native Development** — Building products where LLMs and agents are core features
-
-You'll master:
-* **The Spec-Driven Way** — Writing executable specifications that AI can reason about and implement
-* **Agentic AI Systems** with OpenAI Agents SDK and Google Agent Development Kit
-* **Python + TypeScript bilingual stack** — reasoning (Python) + interaction (TypeScript)
-* **MCP (Model Context Protocol)** and **FastMCP** for agent integration
-* **Realtime and voice agents**, **containerized deployments**, and **event-driven architectures**
-* **Organizational AI Maturity** — how to scale AI adoption from teams to enterprises
-
----
 
 ## 💡 Mission
 
@@ -114,22 +92,6 @@ As you scale AI adoption in your organization, you'll progress through maturity 
 
 ---
 
-## 📘 Structure Overview
-
-1. **AI-Driven Development Foundations**
-2. **AI Tool Landscape: Gemini, Claude, Codex**
-3. **Prompt & Context Engineering**
-4. **Python: The Language of AI Agents**
-5. **Spec-Driven Development**
-6. **OpenAI Agents SDK in Python**
-7. **MCP & FastMCP Fundamentals**
-8. **TypeScript for Realtime & Interaction**
-9. **Building Realtime & Voice Agents**
-10. **Containerization & Orchestration**
-11. **Data, State & Memory (SQL, Graph, Vector)**
-12. **Event-Driven Architecture with Kafka & Dapr**
-13. **Stateful Agents with Dapr Actors & Workflows**
-
 ## 🔬 Core Philosophy
 
 ### **Co-Learning Between Humans and Machines**
@@ -171,7 +133,7 @@ The future of software development is collaborative, conversational, and powered
 3. **Build alongside AI** — Start with Python basics, gradually master AI-native architectures
 4. **Deploy to production** — By the end, you'll be running scalable, intelligent systems
 
-📘 **Read the book**: [https://ai-native.panaversity.org](https://ai-native.panaversity.org)
+📘 **Read the book**: [https://agentfactory.panaversity.org](https://agentfactory.panaversity.org)
 
 🎓 **Panaversity Programs**: [https://panaversity.com/books/ai-native-software-development](https://panaversity.com/books/ai-native-software-development)
 

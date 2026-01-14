@@ -1,23 +1,15 @@
 ---
 name: assessment-builder
-version: 2.0
-description: |
-  Creates assessments with varied question types (MCQ, code-completion, debugging, projects) aligned
-  to learning objectives with meaningful distractors based on common misconceptions. Activate when
-  educators design quizzes, exams, or tests measuring understanding; need questions at appropriate
-  cognitive levels (Bloom's taxonomy); want balanced cognitive distribution (60%+ non-recall); or
-  require rubrics for open-ended questions. Generates MCQs with diagnostic distractors, code-writing
-  prompts, debugging challenges, and project-based assessments targeting deep understanding.
-constitution_alignment: v3.1.2
+description: Creates assessments with varied question types (MCQ, code-completion, debugging, projects) aligned to learning objectives. Use when educators design quizzes/exams, need questions at appropriate Bloom's cognitive levels, want balanced cognitive distribution (60%+ non-recall), or require rubrics for open-ended questions.
 ---
 
 ## Purpose
 
 The assessment-builder skill helps educators create comprehensive, balanced assessments that measure conceptual understanding (not just memorization). This skill generates varied question types, designs meaningful distractors for MCQs, aligns questions with Bloom's taxonomy levels, and provides rubrics for open-ended questions.
 
-**Constitution v3.1.2 Alignment**: This skill implements evals-first assessment design—defining success criteria BEFORE creating assessments, and integrating AI-native co-learning evaluation.
+**Constitution v4.0.1 Alignment**: This skill implements evals-first assessment design (foundational to all pillars)—defining success criteria BEFORE creating assessments, and integrating Section IIb (AI Three Roles Framework) co-learning evaluation.
 
-## Evals-First Assessment Design (Constitution v3.1.2)
+## Evals-First Assessment Design (Constitution v4.0.1)
 
 **CRITICAL WORKFLOW**:
 1. **Evals First**: Define success criteria from chapter spec BEFORE designing questions
@@ -156,9 +148,9 @@ Map assessment difficulty to CEFR proficiency levels (aligned with skills-profic
 
 **Assessment Design Rule**: Questions must match lesson's target CEFR level (from spec).
 
-### Three-Role AI Partnership Assessment (Constitution v3.1.2 Principle 18)
+### Three-Role AI Partnership Assessment (Section IIb, Constitution v4.0.1)
 
-**CRITICAL**: AI-native development requires assessing students' ability to work WITH AI, not just independently.
+**CRITICAL**: AI-native development requires assessing students' ability to work WITH AI in bidirectional co-learning partnership (per Section IIb forcing functions), not just independently.
 
 **AI's Three Roles - Assessment Types**:
 

@@ -1,5 +1,9 @@
 ---
 description: Identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec.
+handoffs: 
+  - label: Build Technical Plan
+    agent: sp.plan
+    prompt: Create a plan for the spec. I am building with...
 ---
 
 ## User Input
@@ -9,6 +13,12 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Core Directive
+
+**Default to Action with Recommendations**: For each question, provide your recommended answer based on best practices. Users can accept recommendations by saying "yes" or provide alternatives. This speeds up clarification while preserving user control.
+
+**WHY**: Most clarifications have "right answers" based on industry patterns. Providing recommendations reduces user cognitive load and accelerates the workflow. Sequential questioning is intentional here—each answer informs subsequent questions.
 
 ## Outline
 

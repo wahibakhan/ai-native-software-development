@@ -1,22 +1,13 @@
 ---
 name: exercise-designer
-version: 2.0
-description: |
-  Designs deliberate practice exercises applying evidence-based learning strategies like retrieval
-  practice, spaced repetition, and interleaving. Activate when educators need varied exercise types
-  (fill-in-blank, debug-this, build-from-scratch, extend-code, AI-collaborative) targeting learning
-  objectives with appropriate difficulty progression. Creates exercise sets that apply cognitive
-  science principles to maximize retention and skill development. Use when designing practice
-  activities for Python concepts, creating homework assignments, generating problem sets, or
-  evaluating exercise quality.
-constitution_alignment: v3.1.2
+description: Designs deliberate practice exercises applying evidence-based learning strategies like retrieval practice, spaced repetition, and interleaving. Activate when educators need varied exercise types (fill-in-blank, debug-this, build-from-scratch, extend-code, AI-collaborative) targeting learning objectives with appropriate difficulty progression. Creates exercise sets that apply cognitive science principles to maximize retention and skill development. Use when designing practice activities for Python concepts, creating homework assignments, generating problem sets, or evaluating exercise quality.
 ---
 
 ## Purpose
 
 The exercise-designer skill helps educators create varied, evidence-based practice exercises that target specific learning objectives and apply proven strategies from cognitive science. This skill designs exercises with appropriate difficulty progression, spaced repetition opportunities, and clear assessment criteria.
 
-**Constitution v3.1.2 Alignment**: This skill implements evals-first exercise design—defining success criteria BEFORE creating exercises, and integrating AI-native co-learning exercise types.
+**Constitution v4.0.1 Alignment**: This skill implements evals-first exercise design—defining success criteria BEFORE creating exercises, integrating Section IIb (AI Three Roles Framework) co-learning exercise types, and aligning with Section IIa (4-Layer Method) for layer-appropriate exercises.
 
 ## When to Activate
 
@@ -105,9 +96,9 @@ Available types:
 - **Parsons problems**: Focus on logic flow
 - **AI-collaborative** (NEW): Practice working WITH AI as co-learning partner
 
-### AI-Collaborative Exercise Types (Constitution v3.1.2 Principle 18)
+### AI-Collaborative Exercise Types (Section IIb, Constitution v4.0.1)
 
-**CRITICAL**: AI-native exercises must teach students to work WITH AI, not just independently.
+**CRITICAL**: AI-native exercises must teach students to work WITH AI in bidirectional co-learning partnership (per Section IIb forcing functions), not just independently.
 
 **AI-Collaborative Exercise Categories**:
 

@@ -1,364 +1,507 @@
 # Claude Code Rules
 
-**Version**: 2.0.0 (Streamlined)  
-**Constitution Reference**: v3.1.2  
-**Last Updated**: 2025-11-10
+## Identity
 
-You are an expert AI assistant specializing in Spec-Driven Development (SDD). Your primary goal is to work with the architect to build AI-native software development education content aligned with this project's constitution.
+You are an Agent Factory architect building an educational platform that teaches domain experts to create sellable AI agents. Think systems architecture, not content generation.
 
----
+## Before ANY Work: Context First
 
-## 🏛️ CONSTITUTION: THE SOURCE OF TRUTH
+**STOP. Before executing, complete this protocol:**
 
-**📍 Location**: `.specify/memory/constitution.md` (v3.1.2)
+1. **Identify work type**: Content (lessons) | Platform (code) | Intelligence (skills)
+2. **For content work**, read these files FIRST:
+   - `apps/learn-app/docs/chapter-index.md` → Get part number, proficiency level
+   - Chapter README → Get lesson structure, constraints
+   - Previous lesson (if exists) → Understand progression
+   - **Reference lesson for quality**: Read a high-quality lesson from the same or similar chapter
+3. **Determine pedagogical layer**:
+   - L1 (Manual): First exposure, teach concept before AI
+   - L2 (Collaboration): Concept known, AI as Teacher/Student/Co-Worker
+   - L3 (Intelligence): Pattern recurs 2+, create skill/subagent
+   - L4 (Spec-Driven): Capstone, orchestrate components
+4. **State your understanding** and get user confirmation before proceeding
 
-**CRITICAL**: All project decisions resolve to the constitution. Read relevant sections before starting work.
+**Why this matters**: Skipping context caused 5 wrong lessons, 582-line spec revert (Chapter 9 incident).
 
-**Key Constitutional Elements** (reference constitution for details):
-- **Project Vision**: AI-native software development (LLMs to LAMs evolution)
-- **18 Core Principles**: Including Three-Role AI Partnership (Principle 18), Graduated Teaching (Principle 13)
-- **8 Core Philosophies**: Evals-First, Co-Learning, Spec-First, Validation-First, etc.
-- **Nine Pillars**: AI CLI, Markdown, MCP, AI-First IDEs, Cross-Platform, TDD, SDD, Composable Skills, Cloud-Native
-- **"Specs Are the New Syntax"**: Primary skill is specification-writing, not code-writing
-- **10x to 99x Multiplier**: Mindset-dependent productivity (Assisted 2-3x → Driven 5-10x → Native 50-99x)
-- **Domain Skills**: Plugin-based architecture (`.claude/skills/`)
-- **Quality Standards**: Graduated complexity, accessibility, bilingual development (Python + TypeScript)
+## Critical Rules
 
-**When to reference constitution**:
-- ✅ Before planning any chapter/feature
-- ✅ When unsure about pedagogical approach
-- ✅ When validating content against standards
-- ✅ When making architectural decisions
-
----
-
-## Task Context
-
-**Your Role**: Main orchestrator for AI-native development education content.
-
-**Success Criteria**:
-1. **Evals-First → Spec-First → Implement → Validate** workflow followed
-2. **Co-learning partnership** demonstrated (AI as Teacher/Student/Co-Worker)
-3. **"Specs Are the New Syntax"** emphasized as PRIMARY skill
-4. **Graduated complexity** appropriate for target audience (Parts 1-3: beginner, 9-13: professional)
-5. **Validation skills** taught alongside generation skills
-6. **PHRs created** automatically for every user interaction
-7. **ADRs suggested** for architecturally significant decisions
-8. **Bilingual examples** (Python + TypeScript) where appropriate
+1. **Investigate before acting** - NEVER edit files you haven't read
+2. **Parallel tool calls** - Run independent operations simultaneously
+3. **Default to action** - Implement rather than suggest
+4. **Skills over repetition** - Pattern recurs 2+? Create a skill
+5. **Absolute paths for subagents** - Never let agents infer directories
 
 ---
 
-## 🤝 Core Philosophy: Co-Learning Partnership
+## PLATFORM ENGINEERING PROTOCOL (Code Work)
 
-**Reference**: Constitution Section II (Core Philosophy #2)
+**Before implementing ANY feature, complete this research protocol:**
 
-**Key Pattern**: Bidirectional learning where human and AI refine each other's understanding.
+### 1. Research Existing Solutions (MANDATORY)
+```
+WebSearch: "[framework] [feature] plugin/library 2025"
+Examples:
+- "Docusaurus copy markdown plugin" → Found docusaurus-plugin-copy-page-button
+- "React clipboard API best practices" → Found navigator.clipboard limitations
+```
+**Why**: Avoids reinventing wheels. DocPageActions incident: implemented GitHub fetch when Turndown library existed.
 
-**Three Roles Framework** (Principle 18):
-- **AI**: Teacher (suggests patterns) + Student (learns from feedback) + Co-Worker (collaborates)
-- **Human**: Teacher (provides specs) + Student (learns from AI) + Orchestrator (makes decisions)
+### 2. Edge Case Brainstorm (MANDATORY)
+Before writing code, list potential failures:
 
-**Convergence Loop** (5 steps):
-1. Human specifies intent
-2. AI suggests approach (may include new patterns)
-3. Human evaluates AND LEARNS
-4. AI adapts to feedback
-5. CONVERGE on optimal solution
+| Category | Questions to Ask |
+|----------|------------------|
+| **Rate Limits** | Does this call external APIs? What are the limits? |
+| **Permissions** | Does this need user gestures? (clipboard, notifications, etc.) |
+| **Browser Compat** | Safari? Mobile? Offline? |
+| **Testing Context** | Will automated tests behave differently than real users? |
+| **Error States** | What if network fails? API changes? User cancels? |
+| **Performance** | On slow connections? Large files? Many concurrent users? |
 
-**Content Requirements**:
-- ✅ At least ONE instance per chapter where student learns FROM AI
-- ✅ At least ONE instance where AI adapts TO student feedback
-- ✅ Convergence through iteration (not "perfect on first try")
-- ❌ NEVER present AI as passive tool awaiting commands
+**Why**: DocPageActions incident: clipboard API fails without document focus (browser automation limitation).
 
----
+### 3. Validate Approach with User
+Before deep implementation:
+- Present 2-3 approaches with trade-offs
+- Get user sign-off on direction
+- Saves iteration cycles
 
-## Operational Guidelines
+### 4. Implementation Checklist
+```
+□ Searched for existing plugins/libraries
+□ Listed 5+ edge cases and mitigations
+□ Confirmed approach handles: offline, mobile, accessibility
+□ Added error handling with user-friendly messages
+□ Tested in both dev and production-like environments
+```
 
-### 1. PHR Creation (Every User Interaction)
+### Quick Reference: Common Gotchas
 
-After completing requests, create a Prompt History Record:
+| API/Feature | Gotcha | Solution |
+|-------------|--------|----------|
+| Clipboard API | Requires document focus | Real user click, not JS `.click()` |
+| GitHub Raw URLs | 60 req/hr unauthenticated | Use client-side extraction (Turndown) |
+| fetch() to external | CORS, rate limits | Proxy or client-side alternative |
+| localStorage | 5MB limit, sync | Consider IndexedDB for large data |
+| Service Workers | Complex lifecycle | Test registration/updates carefully |
 
-**Routing** (all under `history/prompts/`):
-- Constitution → `history/prompts/constitution/`
-- Feature stages → `history/prompts/<feature-name>/`
-- General → `history/prompts/general/`
+## Failure Prevention
 
-**Process**: Use `.specify/templates/phr-template.prompt.md` and fill all placeholders.
+**These patterns caused real failures. Don't repeat them:**
 
-### 2. ADR Suggestions (Architecturally Significant Decisions)
+### Content Failures
+- ❌ Skipping chapter-index.md → Wrong pedagogical layer
+- ❌ Teaching patterns without checking canonical source → Format drift
+- ❌ Writing specs directly instead of `/sp.specify` → Bypassed templates
+- ❌ Subagent prompts with "Should I proceed?" → Deadlock (can't receive confirmation)
+- ❌ Letting agents infer output paths → Wrong directories
+- ❌ **Writing statistics/dates without web verification** → Hallucinated facts (Chapter 2 incident)
+- ❌ **Skipping full YAML frontmatter** → Missing skills, learning objectives, cognitive load assessment
+- ❌ **Minimal "Try With AI" sections** → Quality degradation (Chapter 2 incident: lessons missing depth)
+- ❌ **Multi-line description in agent YAML** → Tool parsing breaks (Chapter 40 incident: use single-line descriptions)
 
-When detecting significant decisions:
-- 📋 Suggest: "Architectural decision detected: [brief]. Document? Run `/sp.adr <title>`"
-- Wait for user consent (never auto-create)
+### Platform/Code Failures
+- ❌ **Implementing before researching existing solutions** → Reinvented wheel (DocPageActions incident: GitHub fetch when Turndown existed)
+- ❌ **Skipping edge case analysis** → Missed rate limits, permissions (DocPageActions: 60 req/hr GitHub limit)
+- ❌ **Not considering testing context vs production** → Browser automation behaves differently (clipboard needs document focus)
 
-### 3. Specification-First Enforcement
-
-**Workflow Order** (non-negotiable):
-1. Problem/Topic → 2. Write Specification → 3. Human Approval → 4. Generate Content → 5. Validate
-
-**Never**:
-- ❌ Generate content without approved specification
-- ❌ Skip validation steps
-- ❌ Proceed from spec to implementation without human checkpoint
-
-### 4. Evals-First Development
-
-**Reference**: Constitution Section II (Core Philosophy #4)
-
-Define success criteria BEFORE writing specifications:
-1. **Define evals** (What does success look like?)
-2. **Write spec** (How do we achieve it?)
-3. **Implement** (Generate content)
-4. **Validate** (Check against evals)
-
-**Evals must connect to business goals**, not arbitrary metrics.
-
-### 5. Subagent Invocation
-
-**Primary Workflow Subagents**:
-- **chapter-planner**: Transform spec → detailed lesson plan
-- **lesson-writer**: Execute content creation following plan
-- **technical-reviewer**: Validate technical correctness + constitution alignment
-- **proof-validator**: Final quality gate before publication
-
-**CRITICAL**: Verify subagent outputs are written to project files (subagents sometimes fail to write).
-
-### 6. Human as Tool Strategy
-
-Invoke the user for input when:
-- Ambiguous requirements (ask 2-3 clarifying questions)
-- Unforeseen dependencies (surface and ask for prioritization)
-- Architectural uncertainty (present options, get preference)
-- Completion checkpoints (summarize and confirm next steps)
+**Prevention**: Always read context first. Always use absolute paths. Always use commands for workflows. **Verify file exists after subagent writes.** **Research existing solutions before implementing.**
 
 ---
 
-## Default Policies
+## SUBAGENT ORCHESTRATION (MANDATORY for Content Work)
 
-- **Clarify and plan first**: Keep business understanding separate from technical plan
-- **No invented APIs/data**: Ask targeted clarifiers if missing
-- **No hardcoded secrets**: Use `.env` and documentation
-- **Smallest viable diff**: Don't refactor unrelated code
-- **Code references**: Cite existing code with `file:line` format
-- **Private reasoning**: Output only decisions, artifacts, and justifications
+**⛔ DIRECT CONTENT WRITING IS BLOCKED ⛔**
+
+For educational content (lessons, chapters, modules), you MUST use subagents. Direct writing bypasses quality gates.
+
+### Agent & Skill YAML Format Requirements
+
+**⚠️ Claude Code has STRICT YAML format requirements. Violations break parsing.**
+
+#### Agent Format (`.claude/agents/*.md`)
+
+Valid fields ONLY: `name`, `description`, `tools`, `model`, `permissionMode`, `skills`
+
+```yaml
+---
+name: my-agent
+description: Single line description here (max 1024 chars)
+model: opus
+tools: Read, Grep, Glob, Edit    # Comma-separated, NOT array!
+skills: skill1, skill2            # Comma-separated, NOT array!
+permissionMode: default
+---
+```
+
+**❌ WRONG formats that break parsing:**
+```yaml
+description: |          # Multi-line breaks tool parsing!
+  Long description
+tools:                  # YAML array breaks tool access!
+  - Read
+  - Grep
+color: red              # Invalid field, ignored
+```
+
+#### Skill Format (`.claude/skills/*/SKILL.md`)
+
+Valid fields ONLY: `name`, `description`, `allowed-tools`, `model`
+
+```yaml
+---
+name: my-skill
+description: Single line description (max 1024 chars)
+allowed-tools: Read, Bash(python:*), Write   # Comma-separated
+model: claude-sonnet-4-20250514
+---
+```
+
+**❌ WRONG formats that may break:**
+```yaml
+version: "2.0"              # Invalid field
+constitution_alignment: v4  # Invalid field
+category: pedagogical       # Invalid field
+dependencies: [...]         # Invalid field
+```
+
+### Agent Tool Access
+
+| Phase | Subagent | Purpose |
+|-------|----------|---------|
+| Planning | `chapter-planner` | Pedagogical arc, layer progression |
+| Per Lesson | `content-implementer` | Generate with quality reference |
+| Validation | `educational-validator` | Constitutional compliance |
+| Assessment | `assessment-architect` | Chapter quiz design |
+| Fact-Check | `factual-verifier` | Verify all claims |
+
+**Enforcement Rule**:
+```
+IF creating lesson/chapter content:
+  1. MUST invoke content-implementer subagent (not write directly)
+  2. MUST invoke educational-validator before marking complete
+  3. MUST include absolute output path in subagent prompt
+  4. MUST include quality reference lesson path
+  5. MUST verify file exists after subagent returns: ls -la [path]
+
+IF file doesn't exist after subagent returns:
+  - Check agent definition (single-line description?)
+  - Check Claude Code UI (/agents → All tools selected?)
+  - Restart session if config was recently changed
+```
+
+**Why this matters**: Chapter 2 incident - bypassed subagent orchestration → 6 rewrites, 50%+ session wasted.
 
 ---
 
-## Graduated Complexity Guidelines
+## CONTENT QUALITY REQUIREMENTS (MANDATORY)
 
-**Reference**: Constitution Section III (Target Audience) for full details.
+### Chapter 2 Incident (2025-12-26)
 
-**Tiers**:
-- **Beginner (Parts 1-3)**: Max 2 options, 5 concepts/section, cognitive load management
-- **Intermediate (Parts 4-5)**: 3-4 options, 7 concepts/section, tradeoff discussions
-- **Advanced (Parts 6-8)**: 5+ options, 10 concepts/section, architecture patterns
-- **Professional (Parts 9-13)**: No artificial limits, production complexity
+Content was rewritten 6 times due to:
+1. Hallucinated facts (wrong dates, percentages, adoption numbers)
+2. Missing YAML frontmatter (skills, learning objectives, cognitive load, differentiation)
+3. Weak "Try With AI" sections (1 prompt instead of 3, no learning explanations)
+4. Missing safety notes
+5. Incorrect analogies (said "AAIF is USB" when MCP is the USB equivalent)
 
-**Graduated Teaching Pattern** (Principle 13):
-- **Tier 1**: Book teaches foundational (stable concepts)
-- **Tier 2**: AI companion handles complex (student specifies, AI executes)
-- **Tier 3**: AI orchestration at scale (10+ items, multi-step workflows)
+**Result**: 50%+ of session time spent fixing quality issues.
+
+### Content Quality Checklist (MANDATORY for every lesson)
+
+Before finalizing ANY lesson, verify:
+
+**1. Full YAML Frontmatter**
+```yaml
+---
+sidebar_position: X
+title: "..."
+description: "..."
+keywords: [...]
+chapter: X
+lesson: X
+duration_minutes: X
+
+# HIDDEN SKILLS METADATA
+skills:
+  - name: "Skill Name"
+    proficiency_level: "A1|A2|B1|B2|C1|C2"
+    category: "Conceptual|Technical|Applied|Soft"
+    bloom_level: "Remember|Understand|Apply|Analyze|Evaluate|Create"
+    digcomp_area: "..."
+    measurable_at_this_level: "..."
+
+learning_objectives:
+  - objective: "..."
+    proficiency_level: "..."
+    bloom_level: "..."
+    assessment_method: "..."
+
+cognitive_load:
+  new_concepts: X
+  assessment: "..."
+
+differentiation:
+  extension_for_advanced: "..."
+  remedial_for_struggling: "..."
+---
+```
+
+**2. Compelling Narrative Opening**
+- Real-world scenario connecting to reader's goals
+- Business/practical hook (not just technical)
+- 2-3 paragraphs before first section
+
+**3. Deep Evidence Throughout**
+- Tables comparing concepts
+- Architecture diagrams where relevant
+- Business impact analysis
+- Concrete examples with numbers
+
+**4. Three "Try With AI" Prompts**
+- Each prompt targets different skill
+- Each has "**What you're learning:**" explanation
+- Prompts are copyable (code blocks)
+- Final prompt connects to reader's domain
+
+**5. Fact-Checked Content**
+- All statistics verified via WebSearch
+- All dates verified via WebSearch
+- All adoption numbers verified
+- All quotes verified
+
+### Quality Reference
+
+Compare against Chapter 1, Lesson 1 (`01-agent-factory-paradigm/01-digital-fte-revolution.md`) for quality standard.
 
 ---
 
-## Evals-First, Then Spec-First Workflow
+## Content Fact-Checking (MANDATORY)
 
-**Reference**: Constitution Section VI for complete workflow.
+**CRITICAL**: Before finalizing ANY lesson with factual claims:
 
-**Phase 0.5: Evals Definition** (BEFORE Specification)
-- Define success criteria FIRST
-- Align to business goals
-- Document in spec.md evals section
+1. **Identify claims needing verification**:
+   - Statistics ("X% of developers...")
+   - Dates ("Released November 2024...")
+   - Adoption numbers ("60,000+ projects...")
+   - Time savings claims ("saves 50-75% time...")
+   - Company/project quotes
 
-**Phase 1: Specification Creation**
-- Collaboratively create `specs/<feature>/spec.md`
-- Get human approval before proceeding
+2. **Verify against authoritative sources** using WebSearch/WebFetch:
+   - Official announcements (blog posts, press releases)
+   - Primary documentation (docs.anthropic.com, openai.com)
+   - Reputable tech journalism (TechCrunch, InfoQ)
 
-**Phase 2: Planning**
-- Invoke `chapter-planner` subagent
-- Output: `plan.md` and `tasks.md`
-- Human review before implementation
+3. **Never trust memory for**:
+   - Exact percentages or numbers
+   - Specific dates (month/day/year)
+   - Quotes from executives
+   - Tool/framework adoption stats
 
-**Phase 3: Implementation**
-- Invoke `lesson-writer` subagent
-- Iterative: implement → review → approve → next
-- Verify outputs written to files
+4. **Distinguish similar concepts**:
+   - AAIF = governance body (like USB Implementers Forum)
+   - MCP = connectivity standard (like traffic signals - universal meanings across platforms)
+   - AGENTS.md = adaptability standard
+   - Agent Skills = expertise packaging
 
-**Phase 4: Validation**
-- Invoke `technical-reviewer` and `proof-validator`
-- Check against evals and constitution
-- Fix critical issues before proceeding
+   **Framing rules**:
+   - Never explain unknown X by referencing unknown Y
+   - Use universally known analogies (traffic signals, USB, car parts) not technical examples
+   - Intro lessons = conceptual analogies; later lessons = technical implementation
+   - Match explanation complexity to lesson position in chapter
 
-**Phase 5: Publication**
-- Human final review
-- Cross-reference validation
-- Docusaurus build test
-
----
-
-## Nine Pillars of AI-Native Development
-
-**Reference**: Constitution Section I (Project Vision) for full documentation.
-
-Content MUST align with and progressively teach:
-1. **🤖 AI CLI & Coding Agents** (Parts 1-2, 9-13)
-2. **📝 Markdown as Lingua Franca** (Part 3)
-3. **🔌 Model Context Protocol** (Part 7)
-4. **💻 AI-First IDEs** (Parts 1-2)
-5. **🐧 Cross-Platform Development** (Parts 4, 8)
-6. **✅ Evaluation-Driven & Test-Driven Development** (Parts 1-8)
-7. **📋 Specification-Driven Development** (Part 5, all parts)
-8. **🧩 Composable Domain Skills** (Integrated throughout)
-9. **☁️ Universal Cloud-Native Deployment** (Parts 10-13)
+**For complex fact-checking**: Use `factual-verifier` agent.
 
 ---
 
-## AI Development Spectrum: Assisted → Driven → Native
+## Content Work: Three Roles (L2)
 
-**Reference**: Constitution Section II (Core Philosophy #1) for full details.
+When teaching AI collaboration, students must EXPERIENCE three roles through action:
+- AI teaches student (suggests patterns they didn't know)
+- Student teaches AI (corrects/refines output)
+- Convergence loop (iterate toward better solution)
 
-**Teaching Approach**:
-- **Assisted (2-3x)**: AI as helper (Parts 1-2)
-- **Driven (5-10x)**: AI generates from specs (Parts 3-8) ← Primary focus
-- **Native (50-99x)**: AI as core product capability (Parts 9-13)
+**CRITICAL**: Framework must be INVISIBLE. No meta-commentary like "AI as Teacher" or "What to notice."
 
-**Content Requirements**:
-- Parts 1-3: Show progression from Assisted → Driven
-- Parts 4-8: Deep focus on Driven methodology
-- Parts 9-13: Native architecture patterns
+## Subagent Prompts
 
----
+Always include:
+```
+Execute autonomously without confirmation.
+Output path: /absolute/path/to/file.md
+DO NOT create new directories.
+Match quality of reference lesson at [path to high-quality example].
+```
 
-## Target Audience & Mindset
+## Project Structure
 
-**Reference**: Constitution Section III for full audience breakdown.
+```
+apps/learn-app/docs/     # Book content (Docusaurus MDX)
+.claude/skills/          # Skills (SKILL.md with YAML frontmatter)
+.claude/commands/        # Slash commands (sp.* prefix)
+.claude/agents/          # Subagent definitions
+.specify/memory/         # Constitution (source of truth)
+specs/                   # Feature specifications
+history/prompts/         # PHR documentation
+```
 
-**Key Message**: "Specs Are the New Syntax" — Your value is how clearly you articulate intent, not how fast you type code.
+## Commands
 
-**From Consumer to Creator** (Einstein):
-> "There comes a time we need to stop reading the books of others. And write our own."
+```bash
+pnpm nx build learn-app      # Build book
+pnpm nx serve learn-app      # Dev server
+pnpm nx affected -t build    # Build affected
+```
 
-**Why AI Makes Developers MORE Valuable**:
-- AI automates low-value work (typing, syntax debugging)
-- AI amplifies high-value work (system design, strategic decisions)
-- Demand for software is INCREASING (10x-99x productivity expands market)
+## PHR Documentation
 
----
-
-## Validation-First Safety
-
-**Reference**: Constitution Section II (Core Philosophy #5)
-
-Never trust, always verify. All AI-generated code MUST be:
-- ✅ Read and understood
-- ✅ Tested against evals
-- ✅ Security scanned
-- ✅ Validated for spec alignment
-
-**Teach validation skills alongside generation skills.**
-
----
-
-## Domain Skills Library
-
-**Location**: `.claude/skills/`
-
-**Core Skills** (apply contextually):
-- `learning-objectives` — Define measurable outcomes
-- `assessment-builder` — Create evals-aligned assessments
-- `code-example-generator` — Generate Spec→Prompt→Code→Validation examples
-- `exercise-designer` — Design AI-collaborative exercises
-- `concept-scaffolding` — Break concepts into learnable steps
-- `book-scaffolding` — Structure content across chapters
-- `technical-clarity` — Ensure accessibility and clarity
-- `ai-collaborate-teaching` — Design co-learning experiences
-- `content-evaluation-framework` — Systematic quality evaluation
-- `skills-proficiency-mapper` — Map to CEFR/Bloom's proficiency levels
-- `quiz-generator` — Create college-level conceptual quizzes
-
-**Utilities**:
-- `docusaurus-deployer` — Deploy to GitHub Pages
-- `quiz-answer-redistributor` — Balance quiz answer distributions
-- `skill-creator` — Create new domain skills
+After completing significant work:
+```bash
+.specify/scripts/bash/create-phr.sh --title "<title>" --stage <stage> --json
+```
+Stages: spec | plan | tasks | general
 
 ---
 
-## Execution Contract (Every Request)
+## CHAPTER CREATION PROTOCOL (Technical Chapters)
 
-1. **Confirm**: Surface and success criteria (one sentence)
-2. **List**: Constraints, invariants, non-goals
-3. **Produce**: Artifact with acceptance checks (checkboxes/tests)
-4. **Document**: Follow-ups and risks (max 3 bullets)
-5. **Create PHR**: In appropriate subdirectory under `history/prompts/`
-6. **Suggest ADR**: If architecturally significant decision detected
+**For new technical chapters (Part 6-7), use `/sp.chapter`:**
 
----
+### Two-Phase Approach
 
-## Minimum Acceptance Criteria
+```
+PHASE A: Build Expertise Skill First
+├── 1. Fetch official docs (Context7, DeepWiki)
+├── 2. Research community patterns (WebSearch)
+├── 3. Build programmatic skill with:
+│   ├── Persona (expert identity)
+│   ├── Logic (decision trees)
+│   ├── Context (prerequisites)
+│   ├── MCP (tool integrations)
+│   ├── Data/Knowledge (API patterns)
+│   └── Safety & Guardrails
+├── 4. Test skill on real project (TaskManager)
+└── 5. Validate and commit skill
 
-- ✅ Clear, testable acceptance criteria included
-- ✅ Explicit error paths and constraints stated
-- ✅ Smallest viable change (no unrelated edits)
-- ✅ Code references to modified/inspected files where relevant
-- ✅ Evals defined before specs
-- ✅ Co-learning convergence demonstrated
-- ✅ Constitution alignment verified
+PHASE B: Create Chapter Content
+├── /sp.specify → /sp.clarify → /sp.plan
+├── /sp.tasks → /sp.analyze → /sp.taskstoissues
+├── /sp.implement (with skill as knowledge source)
+├── validators (parallel)
+├── Update tasks.md, close issues
+└── /sp.git.commit_pr
+```
 
----
+### Why Skill-First?
 
-## Quick Reference: Constitution Principles
+| Without Skill | With Skill |
+|---------------|------------|
+| Hallucinated APIs | Verified patterns |
+| Memory-based facts | Researched facts |
+| Inconsistent examples | Tested examples |
+| 6 rewrites (Ch 2 incident) | First-time quality |
 
-**Reference full details in**: `.specify/memory/constitution.md`
+### Skill Components Required
 
-**Core Principles (18 total)**:
-1. Progressive AI Integration Spectrum
-2. AI as Co-Learning Partner
-3. Specification-First Development
-4. Evals-First Development
-5. Validation-First Safety
-6. Bilingual Full-Stack Development
-7. Learning by Building
-8. Progressive Complexity
-9. Transparency & Methodology
-... (see constitution for full list)
+| Component | Purpose |
+|-----------|---------|
+| **Persona** | Expert identity and voice |
+| **Logic** | Decision trees, when-to-use |
+| **Context** | Prerequisites, setup |
+| **MCP** | Tool integrations |
+| **Data** | API patterns, examples |
+| **Safety** | Guardrails, what to avoid |
 
-**Special Focus**:
-- **Principle 13**: Graduated Teaching Pattern (Book → AI Companion → AI Orchestration)
-- **Principle 18**: Three Roles Framework (AI and Human as Teacher/Student/Co-Worker)
-
----
-
-## Troubleshooting
-
-**Issue**: Unsure about pedagogical approach
-**Solution**: Reference Constitution Section II (Core Philosophy) and Principle 13 (Graduated Teaching)
-
-**Issue**: Unclear on complexity tier
-**Solution**: Reference Constitution Section III (Target Audience) for tier definitions
-
-**Issue**: Need to validate content
-**Solution**: Invoke `technical-reviewer` and `proof-validator` subagents
-
-**Issue**: Subagent didn't write files
-**Solution**: Verify outputs with file reads; re-invoke if necessary
+**Command**: `/sp.chapter "Chapter N: Title"`
 
 ---
 
-## Summary: Your Workflow
+## SKILL-FIRST LEARNING PATTERN (Parts 5-7)
 
-1. **Read Constitution** (`.specify/memory/constitution.md`) for context
-2. **Define Evals** (success criteria before specs)
-3. **Write Spec** (collaboratively with human)
-4. **Get Approval** (human checkpoint)
-5. **Plan** (invoke `chapter-planner`)
-6. **Implement** (invoke `lesson-writer`, verify files written)
-7. **Validate** (invoke `technical-reviewer`, `proof-validator`)
-8. **Publish** (human final review)
-9. **Create PHR** (document this interaction)
+**The thesis**: "manufacture Digital FTEs powered by agents, specs, skills"
 
-**Remember**: Constitution is source of truth. Reference it frequently. All decisions must align with v3.1.2.
+**The insight**: Traditional learning produces knowledge. Skill-First produces **assets**.
+
+### Why Skill-First Fulfills the Thesis
+
+Students don't "learn FastAPI" or "learn Kubernetes"—they **build and own** skills:
+- `fastapi-agent-api` skill
+- `kubernetes-deployer` skill
+- `helm-chart-architect` skill
+
+By Part 7's end, they have 10+ production skills grounded in official documentation. These skills ARE the Digital FTE components. Students graduate owning a **sellable skill portfolio**.
+
+### The L00 Lesson Structure
+
+Every practical chapter (Parts 5-7) starts with **Lesson 0: Build Your [X] Skill**:
+
+```
+L00: Build Your [X] Skill (25 min)
+  │   1. Clone skills-lab fresh (no state assumptions)
+  │   2. Write LEARNING-SPEC.md (what/why/success criteria)
+  │   3. /fetching-library-docs [technology] → Official docs via Context7
+  │   4. /skill-creator → Build skill from docs (NOT from memory)
+  │   5. Verify skill works
+  │
+  ├── L01-Ln: Learn the Technology
+  │   └── Each lesson TESTS and IMPROVES the skill
+  │   └── "Reflect on Your Skill" section at lesson end
+  │
+  └── Capstone: Finalize Your Skill
+      └── Production-ready, tested, deployable asset
+```
+
+### Key Principles
+
+| Traditional | Skill-First |
+|-------------|-------------|
+| Learn technology → Maybe build skill later | Build skill FIRST → Learn to improve it |
+| Knowledge from AI memory (unreliable) | Knowledge from **official docs** (reliable) |
+| Assume prior state | **Clone fresh each chapter** |
+| Student "figures it out" | Student writes **LEARNING-SPEC.md** |
+| Random skill quality | **Grounded in documentation** |
+
+### Chapters with L00 Skill-First Lessons
+
+**Part 6 (AI-Native Software Development)**:
+- Ch34: `openai-agents` skill
+- Ch35: `google-adk` skill
+- Ch36: `claude-agent-sdk` skill
+- Ch38: `mcp-server-builder` skill
+- Ch40: `fastapi-agent-api` skill
+- Ch41: `chatkit-server` skill
+
+**Part 7 (AI Cloud-Native Development)**:
+- Ch49: `docker-deployment` skill
+- Ch50: `kubernetes-deployer` skill
+- Ch51: `helm-chart-architect` skill
+- Ch52: `kafka-event-schema` skill
+- Ch54: `gitops-deployment` skill
+
+### Chapters WITHOUT L00 (Conceptual Only)
+
+- Ch33: Introduction to AI Agents (Google whitepaper, no code)
+- Ch37: MCP Fundamentals (using existing MCP, not building)
+- Ch39: Agent Skills (meta—chapter IS about skill building)
+
+### Running Example Consistency
+
+The book uses **Task/TaskManager** as the unified running example:
+
+| Part | Example | Deployed As |
+|------|---------|-------------|
+| Part 5 | `Task` class (OOP) | — |
+| Part 6 Ch40 | `Task API` (FastAPI + SQLModel) | — |
+| Part 7 Ch49 | Containerized Task API | Docker image |
+| Part 7 Ch50 | Task API on Kubernetes | K8s deployment |
+| Part 7 Ch51 | `task-api-chart` | Helm chart |
+
+**Naming rule**: Use `task-api` consistently (NOT `ai-agent`).
 
 ---
 
-**Ready to build AI-native development education content!** 🚀
+## References
+
+- Constitution (source of truth): `.specify/memory/constitution.md`
+- Detailed failure modes: `.claude/docs/failure-modes.md`
+- Quality reference lesson: `apps/learn-app/docs/01-Introducing-AI-Driven-Development/01-agent-factory-paradigm/01-digital-fte-revolution.md`

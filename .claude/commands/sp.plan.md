@@ -1,5 +1,13 @@
 ---
 description: Execute the implementation planning workflow using the plan template to generate design artifacts.
+handoffs: 
+  - label: Create Tasks
+    agent: sp.tasks
+    prompt: Break the plan into tasks
+    send: true
+  - label: Create Checklist
+    agent: sp.checklist
+    prompt: Create a checklist for the following domain...
 ---
 
 ## User Input
@@ -8,15 +16,139 @@ description: Execute the implementation planning workflow using the plan templat
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty) and use the chapter-planner subagent to generate the plan. 
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Core Directive
+
+**Context-Aware Routing**: This command analyzes the specification to determine work type and routes to the appropriate planning agent:
+- **Content Work** (lessons, modules, chapters) → `chapter-planner` subagent
+- **Engineering Work** (features, APIs, components) → `general-purpose` subagent
+- **Platform Work** (auth, RAG, infrastructure) → `general-purpose` subagent
+
+**WHY**: Different work types require different planning expertise. Educational content needs pedagogical arc planning. Engineering needs architectural decomposition. Platform needs infrastructure sequencing.
+
+**Agent Discovery**: Before routing, check `.claude/agents/` for current agent inventory. Agent names below are examples—always verify what's actually available.
+
+## Mandatory Skill Invocation (CONTENT WORK)
+
+**For educational content planning, you MUST invoke these skills:**
+
+| Phase | Skill | Purpose |
+|-------|-------|---------|
+| Research | `researching-with-deepwiki` | Understand libraries/frameworks being taught |
+| Research | `fetching-library-docs` | Get accurate technical details via Context7 |
+| Structure | `learning-objectives` | Generate measurable outcomes with Bloom's/CEFR |
+| Structure | `concept-scaffolding` | Progressive complexity design |
+| Structure | `skills-proficiency-mapper` | Calibrate skill levels per lesson |
+| Quality | `canonical-format-checker` | Ensure taught patterns match canonical sources |
+
+**Invocation Pattern**:
+```
+Before planning content:
+1. Skill: researching-with-deepwiki → Understand the technology landscape
+2. Skill: fetching-library-docs → Get accurate API/pattern details
+3. Skill: learning-objectives → Define measurable outcomes
+4. Skill: concept-scaffolding → Design progressive complexity
+```
+
+**Why this matters**: Chapter 2 incident (2025-12-26) - content planned without research skills led to hallucinated facts requiring 6 rewrites.
+
+## Mandatory Subagent Orchestration (CONTENT WORK)
+
+**Direct content planning is BLOCKED. You MUST use subagents:**
+
+| Phase | Subagent | Purpose |
+|-------|----------|---------|
+| Planning | `chapter-planner` | Break chapter into lessons with pedagogical arc |
+| Validation | `pedagogical-designer` | Validate learning progression and scaffolding |
+| Quality | `spec-architect` | Validate spec completeness before planning |
+
+**Enforcement Rule**:
+```
+IF spec contains: lesson, module, chapter, exercise, learning objectives
+THEN you MUST:
+  1. Invoke chapter-planner subagent (NOT plan manually)
+  2. Pass absolute spec path to subagent
+  3. Include: "Execute autonomously without confirmation"
+  4. Review subagent output before writing plan.md
+```
+
+**Why this matters**: Chapter 2 incident - manual planning bypassed chapter-planner, missing:
+- Pedagogical arc (Foundation → Mastery)
+- Layer progression mapping (L1 → L2 → L3 → L4)
+- Cognitive load validation per proficiency tier
 
 ## Outline
 
-1. **Setup**: Run `.specify/scripts/bash/setup-plan.sh --json` from repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. **Setup**: Run `.specify/scripts/bash/setup-plan.sh --json` from repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH.
 
-2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template (already copied).
+2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template.
 
-3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
+3. **Classify Work Type**: Analyze spec to determine routing:
+
+   ```
+   CLASSIFICATION SIGNALS:
+
+   CONTENT (→ chapter-planner):
+   - spec mentions: lesson, module, chapter, exercise, learning objectives
+   - spec references: pedagogical, teaching, students, proficiency
+   - spec includes: 4-layer framework, hardware tiers for content
+
+   ENGINEERING (→ general-purpose):
+   - spec mentions: feature, endpoint, API, component, service
+   - spec references: architecture, database, frontend, backend
+   - spec includes: technical requirements, integrations
+
+   PLATFORM (→ general-purpose):
+   - spec mentions: auth, RAG, deployment, CI/CD, infrastructure
+   - spec references: Better-Auth, Qdrant, Cloud Run, Neon
+   - spec includes: system architecture, scaling, security
+   ```
+
+4. **Route to Appropriate Planner**:
+
+   ### For CONTENT Work (chapter-planner)
+
+   ```
+   Use Task tool with:
+   - subagent_type: "chapter-planner"
+   - prompt: Include spec path, constitution reference, and:
+     - Pedagogical arc requirement (Foundation → Mastery)
+     - Layer progression mapping (L1 → L2 → L3 → L4)
+     - Hardware tier requirements per lesson
+     - Teaching modality variation from previous content
+     - Cognitive load limits by proficiency tier
+   ```
+
+   **chapter-planner Output**:
+   - Lesson structure with learning objectives
+   - Stage identification per lesson (1/2/3/4)
+   - Teaching modality selection with rationale
+   - Hardware tier requirements and fallbacks
+   - Intelligence creation opportunities (skills/subagents)
+   - Capstone composition strategy
+
+   ### For ENGINEERING/PLATFORM Work (general-purpose)
+
+   ```
+   Use Task tool with:
+   - subagent_type: "general-purpose"
+   - prompt: Include spec path, constitution reference, and:
+     - Technical architecture requirements
+     - Component decomposition
+     - Dependency ordering
+     - Test strategy
+     - Integration points
+   ```
+
+   **general-purpose Output**:
+   - Technical architecture decisions
+   - Component breakdown with dependencies
+   - Implementation sequence
+   - Test coverage plan
+   - Integration strategy
+
+5. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
    - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
    - Fill Constitution Check section from constitution
    - Evaluate gates (ERROR if violations unjustified)
@@ -26,8 +158,6 @@ You **MUST** consider the user input before proceeding (if not empty) and use th
    - Re-evaluate Constitution Check post-design
 
 4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
-
-Note: This command intentionally does not generate `tasks.md`. After planning completes, run `/sp.tasks` to produce the actionable `tasks.md` from the spec and plan.
 
 ## Phases
 

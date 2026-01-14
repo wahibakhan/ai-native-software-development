@@ -1,5 +1,13 @@
 ---
 description: Create or update the feature specification from a natural language feature description.
+handoffs: 
+  - label: Build Technical Plan
+    agent: sp.plan
+    prompt: Create a plan for the spec. I am building with...
+  - label: Clarify Spec Requirements
+    agent: sp.clarify
+    prompt: Clarify specification requirements
+    send: true
 ---
 
 ## User Input
@@ -10,39 +18,18 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
+## Core Directive
+
+**Default to Action**: Create the specification immediately rather than asking preliminary questions. Make informed guesses for unspecified details using industry standards and document assumptions. Only use `[NEEDS CLARIFICATION]` markers (max 3) for decisions that genuinely require user input. Always use spec architect subagent
+
+**WHY**: Specification quality improves through iteration, not upfront questioning. A concrete draft with assumptions stated is more valuable than waiting for perfect requirements.
+
 ## Outline
 
 The text the user typed after `/sp.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that feature description, do this:
 
-0. **Detect existing feature branch** (for git worktree workflows):
-
-   a. Check current branch:
-   
-      CURRENT_BRANCH=$(git branch --show-current 2>/dev/null)
-
-      # Check if branch matches: NNN-name or feature-NNN-name
-      if [[ "$CURRENT_BRANCH" =~ ^([0-9]+-|feature-[0-9]+-).*$ ]]; then
-        echo "EXISTING_FEATURE_BRANCH_DETECTED"
-      fi
-
-   b. If existing feature branch detected:
-      - Extract feature number and short-name from branch name
-      - Set `FEATURE_DIR=specs/{number}-{name}`
-      - Set `SPEC_FILE={FEATURE_DIR}/spec.md`
-      - **Skip steps 1-2** (branch already exists)
-      - **Proceed to step 3** (load spec template)
-
-      Example:
-      - Current branch: `feature-001-upload`
-      - Extract: number=001, name=upload
-      - Create spec at: `specs/001-upload/spec.md`
-      - Do NOT create new branch
-
-   c. If NO existing feature branch:
-      - Proceed normally with steps 1-2 (create new branch)
-      
 1. **Generate a concise short name** (2-4 words) for the branch:
    - Analyze the feature description and extract the most meaningful keywords
    - Create a 2-4 word short name that captures the essence of the feature
@@ -57,32 +44,27 @@ Given that feature description, do this:
 
 2. **Check for existing branches before creating new one**:
 
-   **If step 0 detected existing branch**:
-   - Skip this entire step (branch already exists)
-   - Proceed to step 3
-
-   **Otherwise** (standard workflow):
-   
    a. First, fetch all remote branches to ensure we have the latest information:
+
       ```bash
       git fetch --all --prune
       ```
-   
+
    b. Find the highest feature number across all sources for the short-name:
       - Remote branches: `git ls-remote --heads origin | grep -E 'refs/heads/[0-9]+-<short-name>$'`
       - Local branches: `git branch | grep -E '^[* ]*[0-9]+-<short-name>$'`
       - Specs directories: Check for directories matching `specs/[0-9]+-<short-name>`
-   
+
    c. Determine the next available number:
       - Extract all numbers from all three sources
       - Find the highest number N
       - Use N+1 for the new branch number
-   
+
    d. Run the script `.specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS"` with the calculated number and short-name:
       - Pass `--number N+1` and `--short-name "your-short-name"` along with the feature description
       - Bash example: `.specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --json --number 5 --short-name "user-auth" "Add user authentication"`
       - PowerShell example: `.specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" -Json -Number 5 -ShortName "user-auth" "Add user authentication"`
-   
+
    **IMPORTANT**:
    - Check all three sources (remote branches, local branches, specs directories) to find the highest number
    - Only match branches/directories with the exact short-name pattern
@@ -226,6 +208,34 @@ Given that feature description, do this:
 - Avoid HOW to implement (no tech stack, APIs, code structure).
 - Written for business stakeholders, not developers.
 - DO NOT create any checklists that are embedded in the spec. That will be a separate command.
+
+## Educational Content Guidelines (Chapters/Lessons)
+
+When the feature is educational content (book chapter, lesson series), the spec MUST include:
+
+1. **Assumed Knowledge Section** (REQUIRED):
+   ```markdown
+   ## Assumed Knowledge
+
+   **What students know BEFORE this chapter**:
+   - [List specific concepts, tools, vocabulary they already have]
+   - [Reference which prior chapters taught these]
+
+   **What this chapter must explain from scratch**:
+   - [List concepts students DON'T know yet]
+   - [These become foundational context in L1 lessons]
+   ```
+
+2. **Proficiency Level**: Include `proficiency_level: [A1/A2/B1/B2/C1/C2]` from chapter-index.md
+
+3. **Layer Progression Validation**:
+   - Does L1 (Manual) build vocabulary needed for L4 (Spec-Driven)?
+   - Is the manual foundation sufficient before AI collaboration?
+
+4. **Domain Expert Check** (add to checklist):
+   - [ ] Chapter teaches AI-native thinking, not just tool mechanics
+   - [ ] L1 lessons build vocabulary/mental models (not just syntax)
+   - [ ] Chapter connects to Part 6 agent (if in Part 7)
 
 ### Section Requirements
 

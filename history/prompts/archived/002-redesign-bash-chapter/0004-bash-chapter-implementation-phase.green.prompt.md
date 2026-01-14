@@ -9,15 +9,21 @@ feature: 002-redesign-bash-chapter
 branch: 002-redesign-bash-chapter
 user: mjs
 command: /sp.implement
-labels: ["bash-education", "dialogue-first", "lesson-implementation", "content-creation"]
+labels:
+  [
+    "bash-education",
+    "dialogue-first",
+    "lesson-implementation",
+    "content-creation",
+  ]
 links:
   spec: specs/002-redesign-bash-chapter/spec.md
   ticket: null
   adr: null
   pr: null
 files:
-  - book-source/docs/02-AI-Tool-Landscape/07-bash-essentials/01-introducing-ai-workspace.md
-  - book-source/docs/02-AI-Tool-Landscape/07-bash-essentials/02-safety-first-pattern.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/07-bash-essentials/01-introducing-ai-workspace.md
+  - apps/learn-app/docs/02-AI-Tool-Landscape/07-bash-essentials/02-safety-first-pattern.md
 tests:
   - Lesson 1 pedagogical validation: PASS (dialogue-first, A1 proficiency, 3 concepts)
   - Lesson 2 pedagogical validation: PASS (5-step pattern, A1→A2 transition, 4 concepts)
@@ -36,7 +42,8 @@ We will complete implementation
 ✅ **TWO FOUNDATION LESSONS IMPLEMENTED**
 
 **Lesson 1: Introducing Your AI Companion's Workspace** (13 KB, 308 lines)
-- Location: `book-source/docs/02-AI-Tool-Landscape/07-bash-essentials/01-introducing-ai-workspace.md`
+
+- Location: `apps/learn-app/docs/02-AI-Tool-Landscape/07-bash-essentials/01-introducing-ai-workspace.md`
 - Proficiency: CEFR A1 (recognition and identification)
 - Concepts: 3 (current directory, files vs folders, supervision)
 - Dialogues: 3 authentic examples (pwd, ls, verification)
@@ -44,7 +51,8 @@ We will complete implementation
 - Assessment: Formative (Q&A) + Summative (real conversations)
 
 **Lesson 2: The Safety-First Dialogue Pattern** (19 KB, 463 lines)
-- Location: `book-source/docs/02-AI-Tool-Landscape/07-bash-essentials/02-safety-first-pattern.md`
+
+- Location: `apps/learn-app/docs/02-AI-Tool-Landscape/07-bash-essentials/02-safety-first-pattern.md`
 - Proficiency: CEFR A1→A2 (transition to application)
 - Concepts: 4 (5-step pattern, safety, verification, questions)
 - Core Innovation: Explicitly teaches Ask → Explain → Understand → Verify → Execute pattern
@@ -53,6 +61,7 @@ We will complete implementation
 - Assessment: Formative (4 MC questions) + Summative (real dialogue with AI)
 
 **Both Lessons**:
+
 - ✅ Zero isolated syntax blocks (all commands in dialogue)
 - ✅ Authentic AI-learner conversations
 - ✅ Dialogue-first pedagogy throughout
@@ -68,7 +77,7 @@ We will complete implementation
 - ✅ Impact: Initiated full lesson implementation; 2 foundation lessons complete (25% of chapter); both lessons establish dialogue-first pedagogy that subsequent lessons will build upon
 - 🧪 Tests: All pedagogical validations PASS (proficiency levels, cognitive load, format compliance, safety integration)
 - 📁 Files: 2 lesson files created in project directory; total chapter size starting (32 KB from 2 lessons)
-- 🔁 Next prompts: Continue with Lessons 3-8 implementation (can proceed in parallel or sequentially); technical-reviewer to validate pedagogical quality; minor adjustments based on learner feedback
+- 🔁 Next prompts: Continue with Lessons 3-8 implementation (can proceed in parallel or sequentially); validation-auditor to validate pedagogical quality; minor adjustments based on learner feedback
 - 🧠 Reflection: Foundation lessons successfully demonstrate dialogue-first innovation. Lesson 1 establishes workspace awareness; Lesson 2 establishes safety pattern that ALL subsequent lessons reinforce. Ready to scale lesson implementation.
 
 ## Evaluation notes (flywheel)
